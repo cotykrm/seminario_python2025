@@ -23,15 +23,17 @@ answers = [
  ]
  # Índice de la respuesta correcta para cada pregunta, el el mismo orden que las preguntas
 correct_answers_index = [1, 2, 0, 3, 1]
+questions_to_ask = random.choices(list(zip(questions,answers, correct_answers_index)), k=3) 
+#combina en una lista de tuplas, las preguntas, las opciones y las respuestas
 puntaje = 0
 # El usuario deberá contestar 3 preguntas
-for _ in range(3):
+for preguntas,opciones,respuestas in questions_to_ask:
  # Se selecciona una pregunta aleatoria
     question_index = random.randint(0, len(questions)-1)
  # Se muestra la pregunta y las respuestas posibles
-    print(questions[question_index])
-    for i, answer in enumerate(answers[question_index]):
-        print(f"{i + 1}. {answer}")
+    print(preguntas)
+    for i, opcion in enumerate(opciones):
+        print(f"{i + 1}. {opcion}")
  # El usuario tiene 2 intentos para responder correctamente
     for intento in range(2):
         user_answer = (input("Respuesta: ")) #modificacion: quitar el int en el input y sacar el -1
@@ -44,16 +46,20 @@ for _ in range(3):
                 print("Respuesta no válida")
                 sys.exit() #termine de inmediato con exit status
  # Se verifica si la respuesta es correcta
-            elif user_answer == correct_answers_index[question_index]:
+            elif user_answer == respuestas:
                 print("¡Correcto!")
-                puntaje+=1
+                puntaje+=1 #si es correcto, sumo 1 al puntaje
                 break
             else:
  # Si el usuario no responde correctamente después de 2 intentos,
  # se muestra la respuesta correcta
                 print("Incorrecto. La respuesta correcta es:")
-                print(answers[question_index][correct_answers_index[question_index]])
+                print(opciones[respuestas])
                 puntaje -= 0.5 #si es incorrecto, resto 0,5 al puntaje
+                break
  # Se imprime un blanco al final de la pregunta
     print()
-
+if(puntaje>0):
+    print(f"puntaje: {puntaje}")
+else:
+    print("El puntaje fue menor o igual a 0 :(")
